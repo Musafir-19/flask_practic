@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<form action="" method="POST" enctype="multipart/form-data">
+    <input type="text" name="title" placeholder="Название товара"><br>
+    <input type="number" min="1" name="price" placeholder="Цена"><br>
+    <input type="text" name="category" placeholder="Категория"><br>
+    <input type="text" name="availibility" placeholder="Наличие"><br>
+    <input type="text" name="description" placeholder="Описание"><br>
+    <input type="file" name="image"><br>
+    <input type="submit" value="Добавить товар">
+</form>
+{% endblock %}
