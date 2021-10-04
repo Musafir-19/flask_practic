@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!--================Login Box Area =================-->
+<section class="login_box_area section-margin">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="login_box_img">
+					<div class="hover">
+						<h4>Already have an account?</h4>
+						<p>There are advances being made in science and technology everyday, and a good example of this
+							is the</p>
+						<a class="button button-account" href="{{ url_for('login') }}">Login Now</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6">
+				<div class="login_form_inner register_form_inner">
+					<h3>Create an account</h3>
+					<form class="row login_form" action="" id="register_form" method="POST">
+						{{ form.hidden_tag() }}
+						<div class="col-md-12 form-group">
+							{% if form.email.errors %}
+							{{ form.email(class="form-control form-control-lg is-invalid")}}
+							<div class="invalid-feedback">
+								{% for error in form.email.errors %}
+								<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+							{% else %}
+							{{ form.email(class="form-control form-control-lg", placeholder="Email Address")}}
+							{% endif %}
+						</div>
+						<div class="col-md-12 form-group">
+							{% if form.password.errors %}
+							{{ form.password(class="form-control form-control-lg is-invalid")}}
+							<div class="invalid-feedback">
+								{% for error in form.password.errors %}
+								<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+							{% else %}
+							{{ form.password(class="form-control form-control-lg", placeholder="Password")}}
+							{% endif %}
+						</div>
+						<div class="col-md-12 form-group">
+							{% if form.confirm_password.errors %}
+							{{ form.confirm_password(class="form-control form-control-lg is-invalid", placeholder="Confirm password")}}
+							<div class="invalid-feedback">
+								{% for error in form.confirm_password.errors %}
+								<span>{{ error }}</span>
+								{% endfor %}
+							</div>
+							{% else %}
+							{{ form.confirm_password(class="form-control form-control-lg", placeholder="Confirm password")}}
+							{% endif %}
+						</div>
+							{{ form.submit(class="button button-register w-100")}}
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!--================End Login Box Area =================-->
+{% endblock %}
