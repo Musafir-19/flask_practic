@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!--================Login Box Area =================-->
+<div class="col-lg-6">
+    <div class="login_form_inner register_form_inner">
+        <h3>Добавить пост</h3>
+        <form class="row login_form" action="" id="register_form" method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div class="col-md-12 form-group">
+                {% if form.title.errors %}
+                {{ form.title(class="form-control form-control-lg is-invalid", placeholder="Заголовок")}}
+                <div class="invalid-feedback">
+                    {% for error in form.title.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.title(class="form-control form-control-lg", placeholder="Заголовок")}}
+                {% endif %}
+            </div>
+            <div class="col-md-12 form-group">
+                {% if form.content.errors %}
+                {{ form.content(class="form-control form-control-lg is-invalid")}}
+                <div class="invalid-feedback">
+                    {% for error in form.content.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.content(class="form-control form-control-lg", placeholder="Контент")}}
+                {% endif %}
+            </div>
+            <div class="col-md-12 form-group">
+                {% if form.image.errors %}
+                {{ form.image(class="form-control form-control-lg is-invalid", placeholder="Confirm
+                password")}}
+                <div class="invalid-feedback">
+                    {% for error in form.image.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.image(class="form-control form-control-lg", placeholder="Картинка поста")}}
+                {% endif %}
+            </div>
+            {{ form.submit(class="button button-register w-100")}}
+        </form>
+    </div>
+</div>
+<!--================End Login Box Area =================-->
+{% endblock %}

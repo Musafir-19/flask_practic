@@ -3,10 +3,10 @@ from flask_wtf import form
 from werkzeug.utils import secure_filename
 from shop import app
 from flask import render_template, request, redirect, url_for, flash
-from shop.models import Product, db, User
+from shop.models import Post, Product, db, User
 from PIL import Image
-from flask_login import login_user, logout_user, current_user
-from shop.forms import RegistrationForm
+from flask_login import login_user, logout_user, current_user, login_required
+from shop.forms import  PostForm, RegistrationForm, LoginForm
 
 @app.route('/')
 def index():
@@ -16,8 +16,28 @@ def index():
 
 @app.route('/blog')
 def blog():
-    return render_template('blog.html')
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=2)
+    return render_template('blog.html', posts=posts)
 
+
+@app.route('/new_post', methods=['GET', 'POST'])
+@login_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit:
+        image = request.files.get('image')
+        if image:
+            file_name = image.filename
+            image = Image.open(image)
+            image.save('shop/static/img/blog/' + file_name)
+            post = Post(title=form.title.data, 
+                        content=form.content.data, author=current_user, image=file_name)
+            db.session.add(post)
+            db.session.commit()
+            flash('Пост был создан', 'success')
+            return redirect(url_for('blog'))
+    return render_template('new_post.html', form=form)
 
 @app.route('/add_product', methods=['GET', 'POST'])
 def add_product():
@@ -53,7 +73,6 @@ def login():
         return redirect(url_for('index'))
     if request.method == 'POST':
         user = User.query.filter_by(email=request.form.get('email')).first()
-        print(user)
         if user and user.password == request.form.get('password'):
             login_user(user)
             return redirect(url_for('index'))
@@ -68,4 +87,9 @@ def logout():
 def product_detail(product_id):
     product = Product.query.get(product_id) 
     return render_template('product_detail.html', product=product)
+
+@app.route('/blog/<int:post_id>')
+def post_detail(post_id):
+    post = Post.query.get(post_id) 
+    return render_template('post_detail.html', post=post)
         
