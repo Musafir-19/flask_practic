@@ -1,0 +1,16 @@
+def hello(name):
+    return 'Hello, {} {}!'.format(name, xxx)  ### подставляем переменную  
+
+		########
+from datetime import datetime ### показывает настоящее время datetime.now
+
+		########
+from flask_login import login_required	### если пользоват. не аутентифицирован, кидает на login_manager.login_view = 'login'(__init__.py)
+			UserMixin 	### позволяет использовать 4 поля: is_authenticated ...
+			LoginManger	### позволяет входить - выходить
+
+		######## Конфиги в __init__.py #######
+
+login_manager.login_message = 'message'			### если пользоват.  не авторизован
+login_manager.login_message_category = 'info'		### категория
+login_manager.login_view = 'login'			### если пользоват. не аутентифицирован, кидает на 'login'

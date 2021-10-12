@@ -3,10 +3,10 @@ from flask_wtf import form
 from werkzeug.utils import secure_filename
 from shop import app
 from flask import render_template, request, redirect, url_for, flash
-from shop.models import Post, Product, db, User
+from shop.models import Post, Product, db, User, Comment, Buy
 from PIL import Image
 from flask_login import login_user, logout_user, current_user, login_required
-from shop.forms import  PostForm, RegistrationForm, LoginForm
+from shop.forms import  PostForm, RegistrationForm
 
 @app.route('/')
 def index():
@@ -76,6 +76,9 @@ def login():
         if user and user.password == request.form.get('password'):
             login_user(user)
             return redirect(url_for('index'))
+        else:
+            flash('Не правильно введенные данные!', 'success')
+            return redirect(url_for('login'))
     return render_template('login.html')
 
 @app.route('/logout', methods=['GET', 'POST'])
@@ -88,8 +91,32 @@ def product_detail(product_id):
     product = Product.query.get(product_id) 
     return render_template('product_detail.html', product=product)
 
-@app.route('/blog/<int:post_id>')
+@app.route('/blog/<int:post_id>', methods=['GET', 'POST'])
 def post_detail(post_id):
-    post = Post.query.get(post_id) 
-    return render_template('post_detail.html', post=post)
+    post = Post.query.get(post_id)
+    comments = Comment.query.order_by(Comment.date_posted.desc()).all() 
+    if  request.method == 'POST':
+        comment = Comment(name=request.form.get('name'), email=request.form.get('email'),
+        subject=request.form.get('subject'), message=request.form.get('message'), post=post)
+        db.session.add(comment)
+        db.session.commit()
+        flash('Комментарий добавлен!', 'success')
+    return render_template('post_detail.html', post=post, comments=comments)
+
+
+@app.route('/products/<int:product_id>/buy', methods=['GET', 'POST'])
+def buy(product_id):
+    product = Product.query.get(product_id)
+    if request.method == 'POST':
+        f = request.form
+        b = Buy(name=f.get('name'), email=f.get('email'), adress=f.get('adress'), product=product)
+        db.session.add(b)
+        db.session.commit()
+    return render_template('buy.html')
+
+@app.route('/buys')
+def buys():
+    buys = Buy.query.all()
+    return render_template('buys.html', buys=buys)
+
         

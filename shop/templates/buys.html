@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% for buy in buys %}
+    {{ buy.name }}
+    {{ buy.email }}
+    {{ buy.adress }}
+    {{ buy.product }}
+    <br>
+    {% endfor %}
+{% endblock %}

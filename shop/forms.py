@@ -17,11 +17,6 @@ class RegistrationForm(FlaskForm):
         if user:
             raise ValidationError('Такой email уже существует!')
 
-class LoginForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired('Обязательное поле'), Email('Не правильный Email')])
-    password = PasswordField('Пароль', validators=[DataRequired('Введите пароль')])
-    submit = SubmitField('Войдите') 
-
 class PostForm(FlaskForm):
     title  = StringField('Заголовок', validators=[DataRequired()])
     content = TextAreaField('Контент', validators=[DataRequired()]) 
