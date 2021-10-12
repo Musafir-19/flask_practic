@@ -14,4 +14,4 @@
 
 ### Запуск 
 ### Для запуска на Windows `python .\run.py`
-### Для запуска на MacOs или Linix `python .\run.py`
+### Для запуска на MacOs или Linix `python3 .\run.py`
